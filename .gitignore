@@ -2,3 +2,7 @@
 
 server/config/config.env
 server/node_modules
+
+client/node_modules
+client/.next
+client/.env
