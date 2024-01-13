@@ -13,9 +13,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(requestLogger());
 
 import userRoutes from "./routes/user-routes.js";
+import fileRoutes from "./routes/file-routes.js";
 
 app.get("/", (req, res) => res.send("react file manager api"));
 app.use("/api/v1", userRoutes);
+app.use("/api/v1", fileRoutes);
 
 
 app.use(error);

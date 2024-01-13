@@ -2,6 +2,7 @@ import CatchAsyncError from "../middleware/catch-async-error.js";
 import ErrorHandler from "../utils/error-handler.js";
 import {sendToken} from "../utils/jwt-token.js";
 import User from "../models/user-model.js";
+import Folder from "../models/folder-model.js";
 
 
 export const loginUser = CatchAsyncError(async (req, res, next) => {
@@ -32,6 +33,11 @@ export const registerUser = CatchAsyncError(async (req, res, next) => {
         name,
         email,
         password,
+    });
+
+    const rootFolder = await Folder.create({
+        name: "root",
+        owner: user._id
     });
 
     sendToken(user, 201, res);
