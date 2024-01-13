@@ -3,7 +3,7 @@ import {create} from "zustand";
 type UserType = {
     name: string;
     email: string;
-    id: string;
+    _id: string;
 }
 
 interface ProfileStore {

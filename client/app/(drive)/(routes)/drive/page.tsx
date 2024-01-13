@@ -2,6 +2,8 @@
 import React, {useEffect} from 'react';
 import {useProfile} from "@/hooks/use-profile-store";
 import {useRouter} from "next/navigation";
+import DriveHeader from "@/components/drive/drive-header";
+import DataTables from "@/components/drive/data-table";
 
 const Page = () => {
 
@@ -18,8 +20,11 @@ const Page = () => {
 
 
     return (
-        <div className="flex justify-center items-center h-screen">
-            dirve
+        <div className="flex flex-col  h-screen text-white bg-gray-700">
+            <DriveHeader
+                path="My Drive"
+            />
+            <DataTables />
 
         </div>
     );
