@@ -30,7 +30,7 @@ dependencies:
     version: 1.1.5(@types/react-dom@18.0.0)(@types/react@18.0.0)(react-dom@18.0.0)(react@18.0.0)
   '@uploadthing/react':
     specifier: ^6.1.0
-    version: 6.1.0(next@14.0.4)(react@18.0.0)(uploadthing@6.1.1)
+    version: 6.1.0(next@14.0.4)(react@18.0.0)(uploadthing.ts@6.1.1)
   axios:
     specifier: ^1.6.5
     version: 1.6.5
@@ -1178,7 +1178,7 @@ packages:
       next:
         optional: true
     dependencies:
-      '@uploadthing/shared': 6.0.3(@uploadthing/mime-types@0.2.2)
+      '@uploadthing/shared': 6.0.3(@uploadthing.ts/mime-types@0.2.2)
       attr-accept: 2.2.2
       file-selector: 0.6.0
       next: 14.0.4(react-dom@18.0.0)(react@18.0.0)
@@ -1186,7 +1186,7 @@ packages:
       tailwind-merge: 1.14.0
       uploadthing: 6.1.1
     transitivePeerDependencies:
-      - '@uploadthing/mime-types'
+      - '@uploadthing.ts/mime-types'
     dev: false
 
   /@uploadthing/shared@6.0.3(@uploadthing/mime-types@0.2.2):
@@ -3777,7 +3777,7 @@ packages:
     engines: {node: '>=18.13.0'}
     dependencies:
       '@uploadthing/mime-types': 0.2.2
-      '@uploadthing/shared': 6.0.3(@uploadthing/mime-types@0.2.2)
+      '@uploadthing/shared': 6.0.3(@uploadthing.ts/mime-types@0.2.2)
     dev: false
 
   /uri-js@4.4.1:
