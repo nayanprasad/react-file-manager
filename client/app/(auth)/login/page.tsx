@@ -53,12 +53,8 @@ const Page = () => {
                 onLogin(data.user)
                 router.push("/");
             }
-
-
-
         } catch (e) {
             console.log(e);
-
         }
     }
 
@@ -109,8 +105,6 @@ const Page = () => {
                     </div>
                 </form>
             </Form>
-
-
         </Fragment>
     );
 };

@@ -9,16 +9,6 @@ import {useModal} from "@/hooks/use-modal-store";
 import Image from "next/image";
 
 
-
-
-type  FileData = {
-    name: string;
-    url: string;
-    size: number;
-    type: string;
-    folder: string | undefined;
-}
-
 const UploadFileModal = () => {
     const {isOpen, onClose, type, data} = useModal();
 
@@ -30,7 +20,6 @@ const UploadFileModal = () => {
         onClose();
     }
 
-
     return (
         <Dialog open={isModalOpen} onOpenChange={handleClose}>
             <DialogContent>
@@ -39,27 +28,26 @@ const UploadFileModal = () => {
                         {fileToPreview?.name}
                     </DialogTitle>
                 </DialogHeader>
-                {fileToPreview?.type === "pdf" ? (
-                    <div className="flex items-center justify-center">
-                        <iframe
-                            src={fileToPreview?.url}
-                            width="100%"
-                            height="500px"
-                            frameBorder="0"
-                        />
-                    </div>
-                ) : (
-                    <div className="flex items-center justify-center">
-                        <Image
-                            src={fileToPreview?.url}
-                            width={500}
-                            height={500}
-                            alt="file"
-                        />
-                    </div>
-                )}
-
-
+                {fileToPreview?.type === "pdf"
+                    ? (
+                        <div className="flex items-center justify-center">
+                            <iframe
+                                src={fileToPreview?.url}
+                                width="100%"
+                                height="500px"
+                                frameBorder="0"
+                            />
+                        </div>
+                    ) : (
+                        <div className="flex items-center justify-center">
+                            <Image
+                                src={fileToPreview?.url}
+                                width={500}
+                                height={500}
+                                alt="file"
+                            />
+                        </div>
+                    )}
             </DialogContent>
         </Dialog>
     )

@@ -1,11 +1,9 @@
 "use client"
 import React, {useEffect, useState} from 'react';
-import {useProfile} from "@/hooks/use-profile-store";
-import {redirect, useRouter} from "next/navigation";
+import {useRouter} from "next/navigation";
 import DriveHeader from "@/components/drive/drive-header";
 import DataTables from "@/components/drive/data-table";
 import {useModal} from "@/hooks/use-modal-store";
-import {getCurrentProfile} from "@/lib/get-user";
 
 interface DriveIdPageProps {
     params: {

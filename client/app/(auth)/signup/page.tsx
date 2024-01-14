@@ -10,13 +10,10 @@ import {useRouter} from "next/navigation";
 import axios from "axios";
 import {useProfile} from "@/hooks/use-profile-store";
 import Link from "next/link";
-import {Toast, ToastAction} from "@/components/ui/toast";
-import { useToast } from "@/components/ui/use-toast"
 
 const Page = () => {
 
     const router = useRouter();
-    const {toast} = useToast();
 
     const {onLogin} = useProfile();
 
@@ -131,8 +128,6 @@ const Page = () => {
                     </div>
                 </form>
             </Form>
-
-
         </Fragment>
     );
 };

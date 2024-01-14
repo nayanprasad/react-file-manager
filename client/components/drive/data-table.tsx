@@ -44,7 +44,7 @@ const DataTable = ({data}: DataTableProps) => {
     const handleFileMove = (params: any) => {
         if (params.row.type === "Folder")
             return
-        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/folders`,{
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/folders`, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")} `,
             }
@@ -130,22 +130,29 @@ const DataTable = ({data}: DataTableProps) => {
                 return (
                     <div className="flex gap-3">
                         <Tooltip title={"Download"}>
-                            <FileDownloadIcon onClick={() => handleDownload(params.row.id)}
-                                              className={`${params.row.type !== "Folder" ? "flex cursor-pointer" : "hidden"}`}/>
+                            <FileDownloadIcon
+                                onClick={() => handleDownload(params.row.id)}
+                                className={`${params.row.type !== "Folder" ? "flex cursor-pointer" : "hidden"}`}
+                            />
                         </Tooltip>
                         <Tooltip title={"Edit"}>
-                            <EditIcon onClick={() => onOpen("renameFileFolder", {itemToRename: params.row})}
-                                      color={"primary"} className={"cursor-pointer"}/>
+                            <EditIcon
+                                onClick={() => onOpen("renameFileFolder", {itemToRename: params.row})}
+                                color={"primary"} className={"cursor-pointer"}/>
                         </Tooltip>
                         <Tooltip title={"Move"}>
-                            <DriveFileMoveIcon onClick={() => handleFileMove(params)}
-                                               color={"primary"}
-                                               className={`${params.row.type !== "Folder" ? "flex cursor-pointer" : "hidden"}`}/>
+                            <DriveFileMoveIcon
+                                onClick={() => handleFileMove(params)}
+                                color={"primary"}
+                                className={`${params.row.type !== "Folder" ? "flex cursor-pointer" : "hidden"}`}
+                            />
                         </Tooltip>
                         <Tooltip title={"Delete"}>
-                            <DeleteIcon onClick={() => onOpen("deleteFileFolder", {itemToDelete: params.row})}
-                                        color={"error"}
-                                        className={"cursor-pointer"}/>
+                            <DeleteIcon
+                                onClick={() => onOpen("deleteFileFolder", {itemToDelete: params.row})}
+                                color={"error"}
+                                className={"cursor-pointer"}
+                            />
                         </Tooltip>
                     </div>
                 );

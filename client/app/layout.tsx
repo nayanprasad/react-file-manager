@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-    const {getUser, user} = useProfile();
+    const {getUser} = useProfile();
 
     useEffect(() => {
         getUser();
