@@ -10,6 +10,7 @@ import {useRouter} from "next/navigation";
 import axios from "axios";
 import {useProfile} from "@/hooks/use-profile-store";
 import Link from "next/link";
+import {toast} from "react-hot-toast";
 
 const Page = () => {
 
@@ -47,14 +48,16 @@ const Page = () => {
 
             const {data} = await axios.post(url, values);
             if(data.success) {
-                console.log(data)
+                // console.log(data)
+                toast.success("Login successful")
                 localStorage.setItem("token", data.token)
                 localStorage.setItem("user", JSON.stringify(data.user))
                 onLogin(data.user)
                 router.push("/");
             }
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.log(e)
+            toast.error(e.response.data.message)
         }
     }
 
@@ -67,7 +70,7 @@ const Page = () => {
                         name={"email"}
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel className="text-white">
+                                <FormLabel className="">
                                     Email
                                 </FormLabel>
                                 <FormControl>
@@ -85,7 +88,7 @@ const Page = () => {
                         name={"password"}
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel className="text-white">
+                                <FormLabel className="">
                                     Password
                                 </FormLabel>
                                 <FormControl>
@@ -99,9 +102,10 @@ const Page = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type={"submit"} >Login</Button>
+                    <Button type={"submit"}>Login</Button>
                     <div className="flex justify-center items-center">
-                        <p className="">Don&apos;t have an account? <Link href="/signup" className="text-blue-500">Sign up</Link></p>
+                        <p className="">Don&apos;t have an account? <Link href="/signup" className="text-blue-500">Sign
+                            up</Link></p>
                     </div>
                 </form>
             </Form>

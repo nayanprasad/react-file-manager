@@ -18,7 +18,6 @@ const Page =  ({params}: DriveIdPageProps) => {
     const [data, setData] = useState<any>()
 
     useEffect(() => {
-        console.log("here")
 
         fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/folder/${params.folderId}`, {
             headers: {
@@ -34,7 +33,7 @@ const Page =  ({params}: DriveIdPageProps) => {
             router.push("/")
         })
 
-    }, [type]);
+    }, [type, params]);
 
 
     return (

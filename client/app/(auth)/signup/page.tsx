@@ -10,6 +10,7 @@ import {useRouter} from "next/navigation";
 import axios from "axios";
 import {useProfile} from "@/hooks/use-profile-store";
 import Link from "next/link";
+import {toast} from "react-hot-toast";
 
 const Page = () => {
 
@@ -49,16 +50,17 @@ const Page = () => {
 
             const {data} = await axios.post(url, values);
             if(data.success) {
-                console.log(data)
+                // console.log(data)
+                toast.success("Signup successful")
                 localStorage.setItem("token", data.token)
                 localStorage.setItem("user", JSON.stringify(data.user))
                 onLogin(data.user)
                 router.push("/");
             }
 
-
-        } catch (e) {
+        } catch (e: any) {
             console.log(e);
+            toast.error(e.response.data.message)
         }
 
     }
@@ -72,7 +74,7 @@ const Page = () => {
                         name={"name"}
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel className="text-white">
+                                <FormLabel className="">
                                     Name
                                 </FormLabel>
                                 <FormControl>
@@ -90,7 +92,7 @@ const Page = () => {
                         name={"email"}
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel className="text-white">
+                                <FormLabel className="">
                                     Email
                                 </FormLabel>
                                 <FormControl>
@@ -108,7 +110,7 @@ const Page = () => {
                         name={"password"}
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel className="text-white">
+                                <FormLabel className="">
                                     Password
                                 </FormLabel>
                                 <FormControl>
@@ -122,7 +124,7 @@ const Page = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type={"submit"} >Login</Button>
+                    <Button type={"submit"} >Signup</Button>
                     <div className="flex justify-center items-center">
                         <p className="">Already have an account? <Link href="/login" className="text-blue-500">Login</Link></p>
                     </div>

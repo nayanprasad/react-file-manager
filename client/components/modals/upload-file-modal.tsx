@@ -62,7 +62,6 @@ const UploadFileModal = () => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             form.clearErrors();
-            console.log(fileData)
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/file/upload`, fileData,
                 {
                     headers: {

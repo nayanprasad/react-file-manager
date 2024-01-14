@@ -90,9 +90,7 @@ export const getRootFolderDatas = CatchAsyncError(async (req, res, next) => {
     if (!folder)
         return next(new ErrorHandler("folder not found", 404));
 
-
     const files = await File.find({folder: folder._id});
-
 
     res.status(200).json({
         success: true,

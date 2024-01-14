@@ -7,6 +7,7 @@ import {useProfile} from "@/hooks/use-profile-store";
 import {ModalProviders} from "@/components/providers/modal-provider";
 import {ThemeProvider} from "@/components/providers/theme-provider";
 import {useEffect} from "react";
+import {Toaster} from "react-hot-toast";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,6 +40,10 @@ export default function RootLayout({
             enableSystem={true}
         >
         <ModalProviders />
+            <Toaster
+                position="top-center"
+                reverseOrder={true}
+            />
         {children}
         </ThemeProvider>
       </body>
