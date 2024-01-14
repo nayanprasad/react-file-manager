@@ -31,10 +31,10 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-black")}>
+      <body className={cn(inter.className, )}>
         <ThemeProvider
             attribute={"class"}
-            defaultTheme={"dark"}
+            defaultTheme={"light"}
             storageKey={"react-file-manager-theme"}
             enableSystem={true}
         >

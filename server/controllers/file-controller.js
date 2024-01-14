@@ -36,6 +36,7 @@ export const createFolder = CatchAsyncError(async (req, res, next) => {
         owner: req.user._id
     });
 
+    await Folder.updateOne({_id: parent}, {$push: {folders: folder._id}})
     res.status(201).json({
         success: true,
         folder
@@ -57,11 +58,12 @@ export const getFolderDatas = CatchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler("you are not allowed to access this folder", 403));
 
     const files = await File.find({folder: id});
+    const folders = await Folder.find({parent: id});
 
     res.status(200).json({
         success: true,
         files,
-        folder
+        folders
     })
 })
 
@@ -75,9 +77,10 @@ export const getRootFolderDatas = CatchAsyncError(async (req, res, next) => {
 
         const files = await File.find({folder: folder._id});
 
+        const folders = await Folder.find({parent: folder._id});
+
         res.status(200).json({
             success: true,
-            files,
-            folder
+            folders
         })
     })

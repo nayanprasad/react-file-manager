@@ -1,113 +1,82 @@
 import React from 'react';
-import TableContainer from "@mui/material/TableContainer";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
-// import Menu from "@/components/Menu/Menu";
+import {DataGrid} from '@mui/x-data-grid';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
-const data = {
-    files: [
-        {
-            name: "file1",
-            type: "image",
-            size: "1mb",
-            cid: "1234567890",
-            _id: "1234567890",
-            isFavorite: false,
-        },
-        {
-            name: "file2",
-            type: "video",
-            size: "1mb",
-            cid: "1234567890",
-            _id: "1234567890",
-            isFavorite: false,
-        },
-        {
-            name: "file3",
-            type: "document",
-            size: "1mb",
-            cid: "1234567890",
-            _id: "1234567890",
-            isFavorite: false,
-        },
-        {
-            name: "file4",
-            type: "audio",
-            size: "1mb",
-            cid: "1234567890",
-            _id: "1234567890",
-            isFavorite: false,
-        },
-        {
-            name: "file5",
-            type: "other",
-            size: "1mb",
-            cid: "1234567890",
-            _id: "1234567890",
-            isFavorite: false,
-        },
-    ]
+type Data = {
+    success: boolean;
+    files: any;
+    folders: any;
 }
 
-const DataTable = ({
-                       // data,
-                       // downloadMenu,
-                       // shareMenu,
-                       // favoriteMenu,
-                       // deleteMenu,
-                       // removeShareMenu,
-                       // handleFileClick
-                   }) => {
+interface DataTableProps {
+    data: Data;
+    downloadMenu: any;
+    shareMenu: any;
+    favoriteMenu: any;
+    deleteMenu: any;
+    removeShareMenu: any;
+    handleFileClick: any;
+}
 
-    const handleFileClick = (file: any) => {
-        console.log(file);
-    }
 
-    const downloadMenu = () => {
-        console.log("download");
-    }
+const DataTable = ({data}: DataTableProps) => {
+
+    const columns = [
+        {field: "name", headerName: "Name", minWidth: 300, flex: 0.8},
+        {field: "type", headerName: "Type", minWidth: 150, flex: 0.5},
+        {field: "date", headerName: "Last Modified", minWidth: 100, flex: 0.5,},
+        {field: "size", headerName: "size", minWidth: 100, flex: 0.5},
+        {
+            field: "actions",
+            flex: 0.3,
+            headerName: "Actions",
+            minWidth: 100,
+            type: "number",
+            sortable: false,
+            renderCell: (params: any) => {
+                return (
+                    <>
+                        <EditIcon color={"primary"}/>
+                        <DeleteIcon className={"redColor"}/>
+                    </>
+                );
+            },
+        },
+    ];
+
+    const rows: any = [];
+
+    data?.files.forEach((file: any) => {
+        rows.push({
+            id: file._id,
+            name: file.name,
+            type: "File",
+            date: file.createdAt,
+            size: file.size,
+        });
+    });
+
+    data?.folders.forEach((folder:any) => {
+        rows.push({
+            id: folder._id,
+            name: folder.name,
+            type: "Folder",
+            date: folder.createdAt,
+            size: "---"
+        });
+    });
 
     return (
-        <TableContainer >
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell><div className="text-white"> Name</div></TableCell>
-                        <TableCell><div className="text-white">Last modified</div></TableCell>
-                        <TableCell><div className="text-white">File Size</div></TableCell>
-                        <TableCell><div className="text-white">Options</div></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data?.files?.map((file, index) => (
-                        <TableRow key={index}>
-                            <TableCell>
-                                <div onClick={() => handleFileClick(file)}>{file.name.slice(0, 20)}</div>
-                            </TableCell>
-                            <TableCell>{file.type}</TableCell>
-                            <TableCell>{file.size}</TableCell>
-                            <TableCell>
-                                {/*<Menu*/}
-                                {/*    cid={file.cid}*/}
-                                {/*    id={file._id}*/}
-                                {/*    isFavorite={file.isFavorite}*/}
-                                {/*    downloadMenu={downloadMenu}*/}
-                                {/*    shareMenu={shareMenu}*/}
-                                {/*    favoriteMenu={favoriteMenu}*/}
-                                {/*    deleteMenu={deleteMenu}*/}
-                                {/*    removeShareMenu={removeShareMenu}*/}
-                                {/*/>*/}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-
+        <DataGrid
+            rows={rows}
+            columns={columns}
+            // pageSize={10}
+            // disableSelectionOnClick
+            className="data-t"
+            autoHeight
+        />
     );
 };
 

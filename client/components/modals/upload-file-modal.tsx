@@ -22,6 +22,7 @@ import {Button} from "@/components/ui/button";
 import {FileUpload} from "@/components/file-upload";
 import {useRouter} from "next/navigation";
 import {useModal} from "@/hooks/use-modal-store";
+import {useState} from "react";
 
 const formSchema = z.object({
     fileUrl: z.string().min(1, {
@@ -29,11 +30,21 @@ const formSchema = z.object({
     })
 });
 
+
+type  FileData = {
+    name: string;
+    url: string;
+    size: number;
+    type: string;
+}
+
 const UploadFileModal = () => {
     const {isOpen, onClose, type, data} = useModal();
     const router = useRouter();
 
     const isModalOpen = isOpen && type === "uploadFile";
+
+    const [fileData, setFileData] = useState<FileData | null>(null);
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -50,6 +61,21 @@ const UploadFileModal = () => {
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        try {
+            form.clearErrors();
+            console.log(fileData)
+            const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/file/upload`, fileData,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                    }
+                });
+            console.log(data)
+            form.reset();
+            onClose();
+        } catch (e) {
+            console.log(e);
+        }
 
     }
 
@@ -77,7 +103,16 @@ const UploadFileModal = () => {
                                                 <FileUpload
                                                     endpoint="uploadFile"
                                                     value={field.value}
-                                                    onChange={field.onChange}
+                                                    onChange={(file) => {
+                                                        setFileData({
+                                                            name: file.name,
+                                                            url: file.url,
+                                                            size: file.size,
+                                                            type: file.url.split(".").pop()
+                                                        })
+                                                        field.onChange(file.url);
+                                                    }}
+
                                                 />
                                             </FormControl>
                                         </FormItem>
@@ -86,8 +121,8 @@ const UploadFileModal = () => {
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button disabled={isLoading}>
-                                Send
+                            <Button className="w-full" disabled={isLoading}>
+                                Upload
                             </Button>
                         </DialogFooter>
                     </form>
