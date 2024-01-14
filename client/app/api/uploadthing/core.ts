@@ -4,17 +4,19 @@ import {useProfile} from "@/hooks/use-profile-store";
 const f = createUploadthing();
 
 const handleAuth =  () => {
-    const { user }  = useProfile();
-    if (!user)
-        throw new Error("Unauthorized");
-    return {userId: user._id};
+    // const { user, getUser }  = useProfile();
+    // console.log(user)
+    // if (!user)
+    //     throw new Error("Unauthorized");
+    // return {userId: user._id};
+    return true;
 }
 
 
 
 export const ourFileRouter = {
     uploadFile: f(["image", "pdf"])
-        .middleware(() => handleAuth())
+        // .middleware(() => handleAuth())
         .onUploadComplete(() => {}),
 
 } satisfies FileRouter;
