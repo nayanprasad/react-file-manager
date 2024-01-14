@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {useModal} from "@/hooks/use-modal-store";
 import FolderIcon from '@mui/icons-material/Folder';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
+import {useRouter} from "next/navigation";
 
 
 type Data = {
@@ -21,21 +22,32 @@ interface DataTableProps {
 const DataTable = ({data}: DataTableProps) => {
 
     const {onOpen} = useModal()
+    const router = useRouter();
 
     const handleFilePreview = (params: any) => {
-        if(params.row.type === "Folder")
-            return;
+        if (params.row.type === "Folder")
+            return
         const id = params.row.id;
         const file = data.files.find((file: any) => file._id === id);
         onOpen("filePreview", {fileToPreview: file})
     }
 
+    const handleFolderDoubleClick = (params: any) => {
+        if (params.row.type === "File")
+            return
+        router.push(`/drive/${params.row.id}`);
+    }
+
     const columns = [
-        {field: "name", headerName: "Name", minWidth: 300, flex: 0.8,
+        {
+            field: "name", headerName: "Name", minWidth: 300, flex: 0.8,
             renderCell: (params: any) => {
                 return (
-                    <div onClick={() => handleFilePreview(params)} className="hover:cursor-pointer">
-                        {params.row.type === "Folder" ? <FolderIcon className={"mr-2"}/> : <FilePresentIcon className={"mr-2"}/>}
+                    <div onClick={() => handleFilePreview(params)}
+                         onDoubleClick={() => handleFolderDoubleClick(params)}
+                         className="hover:cursor-pointer">
+                        {params.row.type === "Folder" ? <FolderIcon className={"mr-2"}/> :
+                            <FilePresentIcon className={"mr-2"}/>}
                         {params.row.name}
                     </div>
                 );
@@ -55,8 +67,10 @@ const DataTable = ({data}: DataTableProps) => {
             renderCell: (params: any) => {
                 return (
                     <>
-                        <EditIcon onClick={() => onOpen("renameFileFolder", {itemToRename: params.row}) } color={"primary"} className={"hover:cursor-pointer"}/>
-                        <DeleteIcon onClick={() => onOpen("deleteFolder", {itemToDelete: params.row}) }  color={"error"} className={"hover:cursor-pointer"}/>
+                        <EditIcon onClick={() => onOpen("renameFileFolder", {itemToRename: params.row})}
+                                  color={"primary"} className={"hover:cursor-pointer"}/>
+                        <DeleteIcon onClick={() => onOpen("deleteFolder", {itemToDelete: params.row})} color={"error"}
+                                    className={"hover:cursor-pointer"}/>
                     </>
                 );
             },
@@ -75,7 +89,7 @@ const DataTable = ({data}: DataTableProps) => {
         });
     });
 
-    data?.folders?.forEach((folder:any) => {
+    data?.folders?.forEach((folder: any) => {
         rows.push({
             id: folder._id,
             name: folder.name,
