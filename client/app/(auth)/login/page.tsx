@@ -105,7 +105,7 @@ const Page = () => {
                     />
                     <Button type={"submit"} >Login</Button>
                     <div className="flex justify-center items-center">
-                        <p className="text-white">Don't have an account? <Link href="/signup" className="text-blue-500">Sign up</Link></p>
+                        <p className="">Don&apos;t have an account? <Link href="/signup" className="text-blue-500">Sign up</Link></p>
                     </div>
                 </form>
             </Form>
