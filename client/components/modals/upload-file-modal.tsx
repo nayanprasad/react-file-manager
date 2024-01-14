@@ -86,11 +86,8 @@ const UploadFileModal = () => {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        Add an attachment
+                        Upload File
                     </DialogTitle>
-                    <DialogDescription className="text-center text-zinc-500">
-                        Send a file as a message
-                    </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -103,7 +100,7 @@ const UploadFileModal = () => {
                                         <FormItem>
                                             <FormControl>
                                                 <FileUpload
-                                                    endpoint="uploadImage"
+                                                    endpoint="uploadFile"
                                                     value={field.value}
                                                     onChange={(file) => {
                                                         setFileData({

@@ -2,8 +2,6 @@
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
@@ -28,8 +26,6 @@ const UploadFileModal = () => {
 
     const {fileToPreview} = data;
 
-
-
     const handleClose = () => {
         onClose();
     }
@@ -43,7 +39,25 @@ const UploadFileModal = () => {
                         {fileToPreview?.name}
                     </DialogTitle>
                 </DialogHeader>
-                <Image src={fileToPreview?.url} alt={"file preview"} width={500} height={500} />
+                {fileToPreview?.type === "pdf" ? (
+                    <div className="flex items-center justify-center">
+                        <iframe
+                            src={fileToPreview?.url}
+                            width="100%"
+                            height="500px"
+                            frameBorder="0"
+                        />
+                    </div>
+                ) : (
+                    <div className="flex items-center justify-center">
+                        <Image
+                            src={fileToPreview?.url}
+                            width={500}
+                            height={500}
+                            alt="file"
+                        />
+                    </div>
+                )}
 
 
             </DialogContent>

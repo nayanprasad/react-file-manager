@@ -17,6 +17,9 @@ export const ourFileRouter = {
     uploadImage:f({image: {maxFileCount: 1}})
         // .middleware(() => handleAuth())
         .onUploadComplete(() => {}),
+    uploadPdf: f({pdf: {maxFileCount: 1}})
+        // .middleware(() => handleAuth())
+        .onUploadComplete(() => {}),
     uploadFile: f(["image", "pdf"])
         // .middleware(() => handleAuth())
         .onUploadComplete(() => {}),
