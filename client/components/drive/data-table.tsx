@@ -2,6 +2,7 @@ import React from 'react';
 import {DataGrid} from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import {useModal} from "@/hooks/use-modal-store";
 
 
 type Data = {
@@ -16,6 +17,8 @@ interface DataTableProps {
 
 
 const DataTable = ({data}: DataTableProps) => {
+
+    const {onOpen} = useModal()
 
     const columns = [
         {field: "name", headerName: "Name", minWidth: 300, flex: 0.8},
@@ -32,8 +35,8 @@ const DataTable = ({data}: DataTableProps) => {
             renderCell: (params: any) => {
                 return (
                     <>
-                        <EditIcon color={"primary"}/>
-                        <DeleteIcon className={"redColor"}/>
+                        <EditIcon color={"primary"} className={"hover:cursor-pointer"}/>
+                        <DeleteIcon onClick={() => onOpen("deleteFolder", {itemToDelete: params.row}) }  color={"error"} className={"hover:cursor-pointer"}/>
                     </>
                 );
             },
@@ -67,9 +70,8 @@ const DataTable = ({data}: DataTableProps) => {
             rows={rows}
             columns={columns}
             // pageSize={10}
-            // disableSelectionOnClick
-            className="data-t"
-            autoHeight
+            className="overflow-y-hidden"
+            // autoHeight
         />
     );
 };
