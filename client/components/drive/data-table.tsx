@@ -3,6 +3,8 @@ import {DataGrid} from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import {useModal} from "@/hooks/use-modal-store";
+import FolderIcon from '@mui/icons-material/Folder';
+import FilePresentIcon from '@mui/icons-material/FilePresent';
 
 
 type Data = {
@@ -20,8 +22,26 @@ const DataTable = ({data}: DataTableProps) => {
 
     const {onOpen} = useModal()
 
+    const handleFilePreview = (params: any) => {
+        if(params.row.type === "Folder")
+            return;
+        const id = params.row.id;
+        const file = data.files.find((file: any) => file._id === id);
+        onOpen("filePreview", {fileToPreview: file})
+    }
+
     const columns = [
-        {field: "name", headerName: "Name", minWidth: 300, flex: 0.8},
+        {field: "name", headerName: "Name", minWidth: 300, flex: 0.8,
+            renderCell: (params: any) => {
+                return (
+                    <div onClick={() => handleFilePreview(params)} className="hover:cursor-pointer">
+                        {params.row.type === "Folder" ? <FolderIcon className={"mr-2"}/> : <FilePresentIcon className={"mr-2"}/>}
+                        {params.row.name}
+                    </div>
+                );
+            }
+
+        },
         {field: "type", headerName: "Type", minWidth: 150, flex: 0.5},
         {field: "date", headerName: "Last Modified", minWidth: 100, flex: 0.5,},
         {field: "size", headerName: "size", minWidth: 100, flex: 0.5},
