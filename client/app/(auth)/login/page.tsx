@@ -51,7 +51,7 @@ const Page = () => {
                 localStorage.setItem("token", data.token)
                 localStorage.setItem("user", JSON.stringify(data.user))
                 onLogin(data.user)
-                router.push("/drive");
+                router.push("/");
             }
 
 

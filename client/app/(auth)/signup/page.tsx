@@ -56,7 +56,7 @@ const Page = () => {
                 localStorage.setItem("token", data.token)
                 localStorage.setItem("user", JSON.stringify(data.user))
                 onLogin(data.user)
-                router.push("/drive");
+                router.push("/");
             }
 
 
@@ -127,7 +127,7 @@ const Page = () => {
                     />
                     <Button type={"submit"} >Login</Button>
                     <div className="flex justify-center items-center">
-                        <p className="text-white">Already have an account? <Link href="/login" className="text-blue-500">Login</Link></p>
+                        <p className="">Already have an account? <Link href="/login" className="text-blue-500">Login</Link></p>
                     </div>
                 </form>
             </Form>

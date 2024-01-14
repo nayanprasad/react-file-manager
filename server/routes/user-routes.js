@@ -6,7 +6,7 @@ import {isAuthenticUser} from "../middleware/auth.js";
 Router.route("/auth").get((req, res) => res.send("auth"));
 Router.route("/login").post(loginUser);
 Router.route("/register").post(registerUser);
-Router.route("/logout").post(logoutUser);
+Router.route("/logout").get(logoutUser);
 Router.route("/profile/me").get(isAuthenticUser, getProfile);
 
 
