@@ -12,12 +12,6 @@ type Data = {
 
 interface DataTableProps {
     data: Data;
-    downloadMenu: any;
-    shareMenu: any;
-    favoriteMenu: any;
-    deleteMenu: any;
-    removeShareMenu: any;
-    handleFileClick: any;
 }
 
 
@@ -48,7 +42,7 @@ const DataTable = ({data}: DataTableProps) => {
 
     const rows: any = [];
 
-    data?.files.forEach((file: any) => {
+    data?.files?.forEach((file: any) => {
         rows.push({
             id: file._id,
             name: file.name,
@@ -58,7 +52,7 @@ const DataTable = ({data}: DataTableProps) => {
         });
     });
 
-    data?.folders.forEach((folder:any) => {
+    data?.folders?.forEach((folder:any) => {
         rows.push({
             id: folder._id,
             name: folder.name,

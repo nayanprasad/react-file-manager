@@ -77,10 +77,10 @@ export const getRootFolderDatas = CatchAsyncError(async (req, res, next) => {
 
         const files = await File.find({folder: folder._id});
 
-        const folders = await Folder.find({parent: folder._id});
 
         res.status(200).json({
             success: true,
-            folders
+            files,
+            folder
         })
     })

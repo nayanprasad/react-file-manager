@@ -5,7 +5,9 @@ export type ModalType = "uploadFile"
 
 interface ModalData {
     fileName?: string;
-    folderName?: string;}
+    folderName?: string;
+    folderId?: string;
+}
 
 interface ModalStore {
     type: ModalType | null;

@@ -36,6 +36,7 @@ type  FileData = {
     url: string;
     size: number;
     type: string;
+    folder: string | undefined;
 }
 
 const UploadFileModal = () => {
@@ -64,14 +65,15 @@ const UploadFileModal = () => {
         try {
             form.clearErrors();
             console.log(fileData)
-            const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/file/upload`, fileData,
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/file/upload`, fileData,
                 {
                     headers: {
                         "Authorization": `Bearer ${localStorage.getItem("token")}`,
                     }
                 });
-            console.log(data)
+            // console.log(data)
             form.reset();
+            router.push(`/drive/${data.folderId}`)
             onClose();
         } catch (e) {
             console.log(e);
@@ -101,14 +103,15 @@ const UploadFileModal = () => {
                                         <FormItem>
                                             <FormControl>
                                                 <FileUpload
-                                                    endpoint="uploadFile"
+                                                    endpoint="uploadImage"
                                                     value={field.value}
                                                     onChange={(file) => {
                                                         setFileData({
                                                             name: file.name,
                                                             url: file.url,
                                                             size: file.size,
-                                                            type: file.url.split(".").pop()
+                                                            type: file.url.split(".").pop(),
+                                                            folder: data.folderId
                                                         })
                                                         field.onChange(file.url);
                                                     }}

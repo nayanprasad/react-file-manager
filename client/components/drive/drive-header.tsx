@@ -4,8 +4,9 @@ import {useModal} from "@/hooks/use-modal-store";
 
 interface DriveHeaderProps {
     path: string;
+    folderId?: string;
 }
-const DriveHeader = ({path}: DriveHeaderProps) => {
+const DriveHeader = ({path, folderId}: DriveHeaderProps) => {
 
     const {onOpen} = useModal()
 
@@ -19,7 +20,7 @@ const DriveHeader = ({path}: DriveHeaderProps) => {
                     </div>
                     <div className="flex items-center">
                        <Button className="mr-2">New folder</Button>
-                          <Button className="mr-2" onClick={() => onOpen("uploadFile")}>Upload</Button>
+                          <Button className="mr-2" onClick={() => onOpen("uploadFile", {folderId})}>Upload</Button>
                     </div>
                 </div>
        </Fragment>
