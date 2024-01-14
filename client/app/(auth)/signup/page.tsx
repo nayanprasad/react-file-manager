@@ -49,7 +49,6 @@ const Page = () => {
                 return;
 
             const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/register`
-            console.log(url)
 
             const {data} = await axios.post(url, values);
             if(data.success) {

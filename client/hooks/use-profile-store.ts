@@ -16,7 +16,7 @@ interface ProfileStore {
 
 export const useProfile = create<ProfileStore>((set) => ({
     user: null,
-    isAuthenticated: localStorage.getItem('token') !== null,
+    isAuthenticated: false,
     getUser: () => {
         const token = localStorage.getItem('token');
         fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/profile/me`, {

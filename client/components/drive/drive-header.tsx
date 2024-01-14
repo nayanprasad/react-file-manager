@@ -1,10 +1,14 @@
 import React, {Fragment} from 'react';
 import {Button} from "@/components/ui/button";
+import {useModal} from "@/hooks/use-modal-store";
 
 interface DriveHeaderProps {
     path: string;
 }
 const DriveHeader = ({path}: DriveHeaderProps) => {
+
+    const {onOpen} = useModal()
+
     return (
        <Fragment>
               <div className="flex justify-between items-center w-full h-16 px-4 bg-gray-800">
@@ -15,7 +19,7 @@ const DriveHeader = ({path}: DriveHeaderProps) => {
                     </div>
                     <div className="flex items-center">
                        <Button className="mr-2">New folder</Button>
-                          <Button className="mr-2">Upload</Button>
+                          <Button className="mr-2" onClick={() => onOpen("uploadFile")}>Upload</Button>
                     </div>
                 </div>
        </Fragment>
