@@ -73,7 +73,7 @@ const UploadFileModal = () => {
                 });
             // console.log(data)
             form.reset();
-            router.push(`/drive/${data.folderId}`)
+            router.refresh();
             onClose();
         } catch (e) {
             console.log(e);

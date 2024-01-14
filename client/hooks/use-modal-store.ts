@@ -1,7 +1,7 @@
 import {create} from "zustand";
 
 
-export type ModalType = "uploadFile"
+export type ModalType = "uploadFile" | "createFolder"
 
 interface ModalData {
     fileName?: string;
