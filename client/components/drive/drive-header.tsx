@@ -24,12 +24,12 @@ const DriveHeader = ({path, folderId}: DriveHeaderProps) => {
                                 <span key={folder.id} >
                                     {folder.name === "root" ?
                                         <span onClick={() => router.push(`/drive/${folder._id}`)}
-                                              className="hover:bg-amber-50 hover:cursor-pointer rounded-3xl p-3">
+                                              className="hover:bg-gray-100 hover:cursor-pointer rounded-3xl p-3">
                                             {"My drive"}
                                         </span>
                                         :
                                         <span onClick={() => router.push(`/drive/${folder._id}`)}
-                                              className="hover:bg-amber-50 hover:cursor-pointer rounded-3xl p-3">
+                                              className="hover:bg-gray-100 hover:cursor-pointer rounded-3xl p-3">
                                             {folder.name}
                                         </span>
                                     }

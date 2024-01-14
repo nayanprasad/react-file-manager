@@ -79,13 +79,32 @@ const DataTable = ({data}: DataTableProps) => {
 
     const rows: any = [];
 
+    const formattedDate = (date: string) => {
+        const inputDate = new Date(date);
+        const options: any = { year: 'numeric', month: 'short', day: 'numeric' };
+        const _formattedDate = inputDate.toLocaleString('en-US', options);
+        return _formattedDate;
+    }
+
+    const convertBytes = (bytes: number) => {
+        const sizes = ["Bytes", "KB", "MB", "GB", "TB"]
+
+        if (bytes === 0) {
+            return "0 Byte";
+        }
+
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+
+        return Math.round(bytes / Math.pow(1024, i)) + " " + sizes[i];
+    }
+
     data?.files?.forEach((file: any) => {
         rows.push({
             id: file._id,
             name: file.name,
             type: "File",
-            date: file.createdAt,
-            size: file.size,
+            date: formattedDate(file.createdAt),
+            size: convertBytes(file.size),
         });
     });
 
@@ -94,10 +113,11 @@ const DataTable = ({data}: DataTableProps) => {
             id: folder._id,
             name: folder.name,
             type: "Folder",
-            date: folder.createdAt,
+            date:  formattedDate(folder.createdAt),
             size: "---"
         });
     });
+
 
     return (
         <DataGrid
