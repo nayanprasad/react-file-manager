@@ -5,7 +5,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import {useModal} from "@/hooks/use-modal-store";
 import FolderIcon from '@mui/icons-material/Folder';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import {useRouter} from "next/navigation";
+import Tooltip from '@mui/material/Tooltip';
 
 
 type Data = {
@@ -38,6 +40,24 @@ const DataTable = ({data}: DataTableProps) => {
         router.push(`/drive/${params.row.id}`);
     }
 
+    const handleDownload = (id: string) => {
+        const file = data.files.find((file: any) => file._id === id);
+        const fileUrl = file.url;
+        fetch(fileUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = file.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error downloading file:', error));
+    }
+
     const columns = [
         {
             field: "name", headerName: "Name", minWidth: 300, flex: 0.8,
@@ -45,7 +65,7 @@ const DataTable = ({data}: DataTableProps) => {
                 return (
                     <div onClick={() => handleFilePreview(params)}
                          onDoubleClick={() => handleFolderDoubleClick(params)}
-                         className="hover:cursor-pointer">
+                         className="hover:cursor-pointer select-none">
                         {params.row.type === "Folder" ? <FolderIcon className={"mr-2"}/> :
                             <FilePresentIcon className={"mr-2"}/>}
                         {params.row.name}
@@ -66,12 +86,21 @@ const DataTable = ({data}: DataTableProps) => {
             sortable: false,
             renderCell: (params: any) => {
                 return (
-                    <>
-                        <EditIcon onClick={() => onOpen("renameFileFolder", {itemToRename: params.row})}
-                                  color={"primary"} className={"hover:cursor-pointer"}/>
-                        <DeleteIcon onClick={() => onOpen("deleteFolder", {itemToDelete: params.row})} color={"error"}
-                                    className={"hover:cursor-pointer"}/>
-                    </>
+                    <div className="flex gap-3">
+                        <Tooltip title={"Download"}>
+                            <FileDownloadIcon onClick={() => handleDownload(params.row.id)}
+                                              className={"hover:cursor-pointer"}/>
+                        </Tooltip>
+                        <Tooltip title={"Edit"}>
+                            <EditIcon onClick={() => onOpen("renameFileFolder", {itemToRename: params.row})}
+                                      color={"primary"} className={"hover:cursor-pointer"}/>
+                        </Tooltip>
+                        <Tooltip title={"Delete"}>
+                            <DeleteIcon onClick={() => onOpen("deleteFolder", {itemToDelete: params.row})}
+                                        color={"error"}
+                                        className={"hover:cursor-pointer"}/>
+                        </Tooltip>
+                    </div>
                 );
             },
         },
@@ -79,11 +108,17 @@ const DataTable = ({data}: DataTableProps) => {
 
     const rows: any = [];
 
-    const formattedDate = (date: string) => {
+    const getFormattedDate = (date: string) => {
         const inputDate = new Date(date);
-        const options: any = { year: 'numeric', month: 'short', day: 'numeric' };
-        const _formattedDate = inputDate.toLocaleString('en-US', options);
-        return _formattedDate;
+
+        const optionsDate: any = {year: 'numeric', month: 'short', day: 'numeric'};
+        const formattedDate = inputDate.toLocaleString('en-US', optionsDate);
+
+        const optionsTime: any = {hour: 'numeric', minute: '2-digit', hour12: true};
+        const formattedTime = inputDate.toLocaleString('en-US', optionsTime);
+
+        const _formattedDateTime = `${formattedDate} ${formattedTime}`;
+        return _formattedDateTime;
     }
 
     const convertBytes = (bytes: number) => {
@@ -103,7 +138,7 @@ const DataTable = ({data}: DataTableProps) => {
             id: file._id,
             name: file.name,
             type: "File",
-            date: formattedDate(file.createdAt),
+            date: getFormattedDate(file.createdAt),
             size: convertBytes(file.size),
         });
     });
@@ -113,7 +148,7 @@ const DataTable = ({data}: DataTableProps) => {
             id: folder._id,
             name: folder.name,
             type: "Folder",
-            date:  formattedDate(folder.createdAt),
+            date: getFormattedDate(folder.createdAt),
             size: "---"
         });
     });
