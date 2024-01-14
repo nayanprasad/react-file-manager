@@ -140,6 +140,11 @@ export const deleteFolder = CatchAsyncError(async (req, res, next) => {
     if (owner !== req.user._id.toString())
         return next(new ErrorHandler("you are not allowed to access this folder", 403));
 
+    const parent = folder.parent;
+
+    if (parent)
+        await Folder.updateOne({_id: parent}, {$pull: {folders: id}})  // remove folder from parent
+
 
     await Folder.findByIdAndDelete(id);
 
@@ -199,3 +204,67 @@ export const renameFolder = CatchAsyncError(async (req, res, next) => {
         message: "folder renamed"
     })
 });
+
+
+export const getAllFolders = CatchAsyncError(async (req, res, next) => {
+
+    const folders = await Folder.find({owner: req.user._id});
+    folders.sort((a, b) => {
+        return a.createdAt - b.createdAt
+    })
+
+    res.status(200).json({
+        success: true,
+        folders
+    })
+});
+
+export const moveFile = CatchAsyncError(async (req, res, next) => {
+    const {id} = req.params;
+    const {folder} = req.body;
+
+    const file = await File.findById(id);
+
+    if (!file)
+        return next(new ErrorHandler("file not found", 404));
+
+    const owner = file.owner.toString()
+
+    if (owner !== req.user._id.toString())
+        return next(new ErrorHandler("you are not allowed to access this file", 403));
+
+    const updatedFile = await File.findByIdAndUpdate(id, {folder});
+
+    res.status(200).json({
+        success: true,
+        message: "file moved",
+        updatedFile
+    })
+});
+
+
+const buildFolderHierarchy = async (parent, userId) => {
+
+    const folders = await Folder.find({parent, owner: userId}).select("_id name parent");
+
+    const folderStructure = [];
+
+    for (let folder of folders) {
+        const children = await buildFolderHierarchy(folder._id, userId);
+        folderStructure.push({
+            _id: folder._id,
+            name: folder.name,
+            parent: folder.parent,
+            children
+        })
+    }
+
+    return folderStructure;
+}
+
+export const getFolderHierarchy = CatchAsyncError(async (req, res, next) => {
+
+    const userId = req.user._id;
+    const folderStructure = await buildFolderHierarchy(null, userId);
+    res.json(folderStructure);
+})
