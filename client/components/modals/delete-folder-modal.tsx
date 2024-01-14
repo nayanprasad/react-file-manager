@@ -17,7 +17,7 @@ const DeleteFolderModal = () => {
     const {isOpen, onClose, type, data} = useModal();
     const router = useRouter();
 
-    const isModalOpen = isOpen && type === "deleteFolder";
+    const isModalOpen = isOpen && type === "deleteFileFolder";
     const {itemToDelete} = data;
 
     const [isLoading, setIsLoading] = useState(false);

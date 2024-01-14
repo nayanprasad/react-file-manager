@@ -6,6 +6,7 @@ import {useModal} from "@/hooks/use-modal-store";
 import FolderIcon from '@mui/icons-material/Folder';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import {useRouter} from "next/navigation";
 import Tooltip from '@mui/material/Tooltip';
 
@@ -40,6 +41,21 @@ const DataTable = ({data}: DataTableProps) => {
         router.push(`/drive/${params.row.id}`);
     }
 
+    const handleFileMove = (params: any) => {
+        if (params.row.type === "Folder")
+            return
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/folders`,{
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")} `,
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                onOpen("moveFile", {fileToMove: params.row, folderHierarchy: data})
+            })
+            .catch(error => console.error('Error downloading file:', error));
+    }
+
     const handleDownload = (id: string) => {
         const file = data.files.find((file: any) => file._id === id);
         const fileUrl = file.url;
@@ -57,56 +73,6 @@ const DataTable = ({data}: DataTableProps) => {
             })
             .catch(error => console.error('Error downloading file:', error));
     }
-
-    const columns = [
-        {
-            field: "name", headerName: "Name", minWidth: 300, flex: 0.8,
-            renderCell: (params: any) => {
-                return (
-                    <div onClick={() => handleFilePreview(params)}
-                         onDoubleClick={() => handleFolderDoubleClick(params)}
-                         className="hover:cursor-pointer select-none">
-                        {params.row.type === "Folder" ? <FolderIcon className={"mr-2"}/> :
-                            <FilePresentIcon className={"mr-2"}/>}
-                        {params.row.name}
-                    </div>
-                );
-            }
-
-        },
-        {field: "type", headerName: "Type", minWidth: 150, flex: 0.5},
-        {field: "date", headerName: "Last Modified", minWidth: 100, flex: 0.5,},
-        {field: "size", headerName: "size", minWidth: 100, flex: 0.5},
-        {
-            field: "actions",
-            flex: 0.3,
-            headerName: "Actions",
-            minWidth: 100,
-            type: "number",
-            sortable: false,
-            renderCell: (params: any) => {
-                return (
-                    <div className="flex gap-3">
-                        <Tooltip title={"Download"}>
-                            <FileDownloadIcon onClick={() => handleDownload(params.row.id)}
-                                              className={"hover:cursor-pointer"}/>
-                        </Tooltip>
-                        <Tooltip title={"Edit"}>
-                            <EditIcon onClick={() => onOpen("renameFileFolder", {itemToRename: params.row})}
-                                      color={"primary"} className={"hover:cursor-pointer"}/>
-                        </Tooltip>
-                        <Tooltip title={"Delete"}>
-                            <DeleteIcon onClick={() => onOpen("deleteFolder", {itemToDelete: params.row})}
-                                        color={"error"}
-                                        className={"hover:cursor-pointer"}/>
-                        </Tooltip>
-                    </div>
-                );
-            },
-        },
-    ];
-
-    const rows: any = [];
 
     const getFormattedDate = (date: string) => {
         const inputDate = new Date(date);
@@ -132,6 +98,62 @@ const DataTable = ({data}: DataTableProps) => {
 
         return Math.round(bytes / Math.pow(1024, i)) + " " + sizes[i];
     }
+
+
+    const columns = [
+        {
+            field: "name", headerName: "Name", minWidth: 300, flex: 0.8,
+            renderCell: (params: any) => {
+                return (
+                    <div onClick={() => handleFilePreview(params)}
+                         onDoubleClick={() => handleFolderDoubleClick(params)}
+                         className="hover:cursor-pointer select-none">
+                        {params.row.type === "Folder" ? <FolderIcon className={"mr-2"}/> :
+                            <FilePresentIcon className={"mr-2"}/>}
+                        {params.row.name}
+                    </div>
+                );
+            }
+
+        },
+        {field: "type", headerName: "Type", minWidth: 150, flex: 0.5},
+        {field: "date", headerName: "Last Modified", minWidth: 100, flex: 0.5,},
+        {field: "size", headerName: "size", minWidth: 100, flex: 0.3},
+        {
+            field: "actions",
+            flex: 0.5,
+            headerName: "Actions",
+            minWidth: 100,
+            type: "number",
+            sortable: false,
+            renderCell: (params: any) => {
+                return (
+                    <div className="flex gap-3">
+                        <Tooltip title={"Download"}>
+                            <FileDownloadIcon onClick={() => handleDownload(params.row.id)}
+                                              className={`${params.row.type !== "Folder" ? "flex cursor-pointer" : "hidden"}`}/>
+                        </Tooltip>
+                        <Tooltip title={"Edit"}>
+                            <EditIcon onClick={() => onOpen("renameFileFolder", {itemToRename: params.row})}
+                                      color={"primary"} className={"cursor-pointer"}/>
+                        </Tooltip>
+                        <Tooltip title={"Move"}>
+                            <DriveFileMoveIcon onClick={() => handleFileMove(params)}
+                                               color={"primary"}
+                                               className={`${params.row.type !== "Folder" ? "flex cursor-pointer" : "hidden"}`}/>
+                        </Tooltip>
+                        <Tooltip title={"Delete"}>
+                            <DeleteIcon onClick={() => onOpen("deleteFileFolder", {itemToDelete: params.row})}
+                                        color={"error"}
+                                        className={"cursor-pointer"}/>
+                        </Tooltip>
+                    </div>
+                );
+            },
+        },
+    ];
+
+    const rows: any = [];
 
     data?.files?.forEach((file: any) => {
         rows.push({

@@ -5,6 +5,7 @@ import CreateFolderModal from "@/components/modals/create-folder-modal";
 import DeleteFolderModal from "@/components/modals/delete-folder-modal";
 import RenameModal from "@/components/modals/rename-modal";
 import FilePreviewModal from "@/components/modals/file-preview-modal";
+import MoveFileModal from "@/components/modals/file-move-modal";
 
 
 export const ModalProviders = () => {
@@ -25,6 +26,7 @@ export const ModalProviders = () => {
             <DeleteFolderModal />
             <RenameModal />
             <FilePreviewModal />
+            <MoveFileModal />
         </>
     );
 };

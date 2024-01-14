@@ -1,7 +1,13 @@
 import {create} from "zustand";
 
 
-export type ModalType = "uploadFile" | "createFolder" | "deleteFolder" | "renameFileFolder" | "filePreview"
+export type ModalType =
+    "uploadFile" |
+    "createFolder" |
+    "deleteFileFolder" |
+    "renameFileFolder" |
+    "filePreview" |
+    "moveFile"
 
 interface ModalData {
     fileName?: string;
@@ -10,6 +16,8 @@ interface ModalData {
     itemToDelete?: any
     itemToRename?: any
     fileToPreview?: any
+    fileToMove?: any
+    folderHierarchy?: any
 }
 
 interface ModalStore {
