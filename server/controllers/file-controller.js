@@ -27,7 +27,7 @@ export const createFolder = CatchAsyncError(async (req, res, next) => {
 
     const {name, parent} = req.body;
 
-    if(!name)
+    if (!name)
         return next(new ErrorHandler("please enter folder name", 400));
 
     const folder = await Folder.create({
@@ -49,12 +49,12 @@ export const getFolderDatas = CatchAsyncError(async (req, res, next) => {
 
     const folder = await Folder.findById(id);
 
-    if(!folder)
+    if (!folder)
         return next(new ErrorHandler("folder not found", 404));
 
     const owner = folder.owner.toString()
 
-    if(owner !== req.user._id.toString())
+    if (owner !== req.user._id.toString())
         return next(new ErrorHandler("you are not allowed to access this folder", 403));
 
     const files = await File.find({folder: id});
@@ -71,16 +71,64 @@ export const getRootFolderDatas = CatchAsyncError(async (req, res, next) => {
 
     const folder = await Folder.findOne({parent: null, name: "root", owner: req.user._id});
 
-        if(!folder)
-            return next(new ErrorHandler("folder not found", 404));
+    if (!folder)
+        return next(new ErrorHandler("folder not found", 404));
 
 
-        const files = await File.find({folder: folder._id});
+    const files = await File.find({folder: folder._id});
 
 
-        res.status(200).json({
-            success: true,
-            files,
-            folder
-        })
+    res.status(200).json({
+        success: true,
+        files,
+        folder
     })
+})
+
+
+export const deleteFile = CatchAsyncError(async (req, res, next) => {
+    const {id} = req.params;
+
+    const file = await File.findById(id);
+
+    if (!file)
+        return next(new ErrorHandler("file not found", 404));
+
+    const owner = file.owner.toString()
+
+    if (owner !== req.user._id.toString())
+        return next(new ErrorHandler("you are not allowed to access this file", 403));
+
+    await File.findByIdAndDelete(id);
+
+    res.status(200).json({
+        success: true,
+        message: "file deleted"
+    })
+})
+
+
+export const deleteFolder = CatchAsyncError(async (req, res, next) => {
+    const {id} = req.params;
+
+    const folder = await Folder.findById(id);
+
+    if (!folder)
+        return next(new ErrorHandler("folder not found", 404));
+
+    if(folder.name === "root")
+        return next(new ErrorHandler("you can't delete root folder", 403));
+
+    const owner = folder.owner.toString()
+
+    if (owner !== req.user._id.toString())
+        return next(new ErrorHandler("you are not allowed to access this folder", 403));
+
+
+    await Folder.findByIdAndDelete(id);
+
+    res.status(200).json({
+        success: true,
+        message: "folder deleted"
+    })
+})
