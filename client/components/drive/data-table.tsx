@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {DataGrid} from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -23,6 +23,11 @@ interface DataTableProps {
 
 
 const DataTable = ({data}: DataTableProps) => {
+
+
+    useEffect(() => {
+        console.log(data)
+    }, [data]);
 
     const {onOpen} = useModal()
     const router = useRouter();
@@ -129,24 +134,28 @@ const DataTable = ({data}: DataTableProps) => {
             renderCell: (params: any) => {
                 return (
                     <div className="flex gap-3">
-                        <Tooltip title={"Download"}>
-                            <FileDownloadIcon
-                                onClick={() => handleDownload(params.row.id)}
-                                className={`${params.row.type !== "Folder" ? "flex cursor-pointer" : "hidden"}`}
-                            />
-                        </Tooltip>
+                        {params.row.type !== "Folder" &&
+                            <Tooltip title={"Download"}>
+                                <FileDownloadIcon
+                                    onClick={() => handleDownload(params.row.id)}
+                                    className={`cursor-pointer`}
+                                />
+                            </Tooltip>
+                        }
                         <Tooltip title={"Edit"}>
                             <EditIcon
                                 onClick={() => onOpen("renameFileFolder", {itemToRename: params.row})}
                                 color={"primary"} className={"cursor-pointer"}/>
                         </Tooltip>
-                        <Tooltip title={"Move"}>
-                            <DriveFileMoveIcon
-                                onClick={() => handleFileMove(params)}
-                                color={"primary"}
-                                className={`${params.row.type !== "Folder" ? "flex cursor-pointer" : "hidden"}`}
-                            />
-                        </Tooltip>
+                        {params.row.type !== "Folder" &&
+                            <Tooltip title={"Move"}>
+                                <DriveFileMoveIcon
+                                    onClick={() => handleFileMove(params)}
+                                    color={"primary"}
+                                    className={`cursor-pointer`}
+                                />
+                            </Tooltip>
+                        }
                         <Tooltip title={"Delete"}>
                             <DeleteIcon
                                 onClick={() => onOpen("deleteFileFolder", {itemToDelete: params.row})}
