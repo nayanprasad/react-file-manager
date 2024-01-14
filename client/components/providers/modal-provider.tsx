@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import UploadFile from "@/components/modals/upload-file-modal";
 import CreateFolderModal from "@/components/modals/create-folder-modal";
 import DeleteFolderModal from "@/components/modals/delete-folder-modal";
+import RenameModal from "@/components/modals/rename-modal";
 
 
 export const ModalProviders = () => {
@@ -21,6 +22,7 @@ export const ModalProviders = () => {
             <UploadFile />
             <CreateFolderModal />
             <DeleteFolderModal />
+            <RenameModal />
         </>
     );
 };

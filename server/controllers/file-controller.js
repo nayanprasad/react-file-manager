@@ -116,7 +116,7 @@ export const deleteFolder = CatchAsyncError(async (req, res, next) => {
     if (!folder)
         return next(new ErrorHandler("folder not found", 404));
 
-    if(folder.name === "root")
+    if (folder.name === "root")
         return next(new ErrorHandler("you can't delete root folder", 403));
 
     const owner = folder.owner.toString()
@@ -132,3 +132,54 @@ export const deleteFolder = CatchAsyncError(async (req, res, next) => {
         message: "folder deleted"
     })
 })
+
+
+export const renameFile = CatchAsyncError(async (req, res, next) => {
+    const {id} = req.params;
+    const {name} = req.body;
+
+    const file = await File.findById(id);
+
+    if (!file)
+        return next(new ErrorHandler("file not found", 404));
+
+    const owner = file.owner.toString()
+
+    if (owner !== req.user._id.toString())
+        return next(new ErrorHandler("you are not allowed to access this file", 403));
+
+    const d = await File.findByIdAndUpdate(id, {name});
+    console.log(d)
+
+    res.status(200).json({
+        success: true,
+        message: "file renamed"
+    })
+})
+
+
+export const renameFolder = CatchAsyncError(async (req, res, next) => {
+    const {id} = req.params;
+    const {name} = req.body;
+
+    const folder = await Folder.findById(id);
+
+    if (!folder)
+        return next(new ErrorHandler("folder not found", 404));
+
+    if (folder.name === "root")
+        return next(new ErrorHandler("you can't rename root folder", 403));
+
+    const owner = folder.owner.toString()
+
+    if (owner !== req.user._id.toString())
+        return next(new ErrorHandler("you are not allowed to access this folder", 403));
+
+
+    await Folder.findByIdAndUpdate(id, {name});
+
+    res.status(200).json({
+        success: true,
+        message: "folder renamed"
+    })
+});

@@ -35,7 +35,7 @@ const DataTable = ({data}: DataTableProps) => {
             renderCell: (params: any) => {
                 return (
                     <>
-                        <EditIcon color={"primary"} className={"hover:cursor-pointer"}/>
+                        <EditIcon onClick={() => onOpen("renameFileFolder", {itemToRename: params.row}) } color={"primary"} className={"hover:cursor-pointer"}/>
                         <DeleteIcon onClick={() => onOpen("deleteFolder", {itemToDelete: params.row}) }  color={"error"} className={"hover:cursor-pointer"}/>
                     </>
                 );
