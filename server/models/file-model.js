@@ -5,7 +5,7 @@ const fileSchema = mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please enter file name'],
-        unique: true,
+        // unique: true,
     },
     size: {
         type: Number,

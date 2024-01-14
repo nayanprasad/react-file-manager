@@ -34,9 +34,7 @@ const Page =  ({params}: DriveIdPageProps) => {
 
     return (
         <div className="flex flex-col  h-screen">
-            <DriveHeader folderId={params.folderId}
-                path="My Drive"
-            />
+            <DriveHeader folderId={params.folderId}  path={data?.ancestors}/>
             <DataTables data={data} />
 
         </div>

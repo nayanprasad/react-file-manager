@@ -60,10 +60,26 @@ export const getFolderDatas = CatchAsyncError(async (req, res, next) => {
     const files = await File.find({folder: id});
     const folders = await Folder.find({parent: id});
 
+    let ancestors = [];
+    ancestors.push({
+        _id: folder._id,
+        name: folder.name,
+        parent: folder.parent
+    });
+    let parent = folder.parent;
+    while (parent) {
+        const folder = await Folder.findById(parent).select("_id name parent");
+        ancestors.push(folder);
+        parent = folder.parent;
+    }
+
+    ancestors.reverse();
+
     res.status(200).json({
         success: true,
         files,
-        folders
+        folders,
+        ancestors
     })
 })
 
