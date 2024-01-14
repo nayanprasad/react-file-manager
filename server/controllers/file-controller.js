@@ -223,6 +223,8 @@ export const moveFile = CatchAsyncError(async (req, res, next) => {
     const {id} = req.params;
     const {folder} = req.body;
 
+    console.log(folder)
+
     const file = await File.findById(id);
 
     if (!file)
@@ -232,6 +234,11 @@ export const moveFile = CatchAsyncError(async (req, res, next) => {
 
     if (owner !== req.user._id.toString())
         return next(new ErrorHandler("you are not allowed to access this file", 403));
+
+    const folderObj = await Folder.findById(folder);
+
+    if (!folderObj)
+        return next(new ErrorHandler("folder not found", 404));
 
     const updatedFile = await File.findByIdAndUpdate(id, {folder});
 
