@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
-import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {useModal} from "@/hooks/use-modal-store";
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle
+} from "@/components/ui/dialog";
 import {
     Accordion,
     AccordionContent,
@@ -28,27 +34,6 @@ const FileMoveModal = () => {
         onClose();
     }
 
-    const renderFolder = (folder: any) => (
-        <Accordion type="single" collapsible className="w-full space-x-5">
-            <AccordionItem value="item-1">
-                <AccordionTrigger>
-                    <div className="flex items-center space-x-2">
-                        <FolderIcon className="h-5 w-5 text-gray-400"/>
-                        <span className={`${selectedFolder === folder ? " font-bold" : ""}`}
-                              onClick={() => setSelectedFolder(folder)}>{folder.name}</span>
-                        <span className="text-gray-400">({folder.children.length})</span>
-                    </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                    <div className="ml-4">
-                        {folder.children.map(renderFolder)}
-                    </div>
-                </AccordionContent>
-            </AccordionItem>
-        </Accordion>
-
-    );
-
     const handleMove = async () => {
         try {
             const {data} = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/file/move/${fileToMove?.id}`, {
@@ -67,6 +52,27 @@ const FileMoveModal = () => {
             handleClose();
         }
     }
+
+    const renderFolder = (folder: any) => (
+        <Accordion type="single" collapsible className="w-full space-x-5">
+            <AccordionItem value="item-1">
+                <AccordionTrigger>
+                    <div className="flex items-center space-x-2">
+                        <FolderIcon className="h-5 w-5 text-gray-400"/>
+                        <span className={`${selectedFolder === folder ? " font-bold" : ""}`}
+                              onClick={() => setSelectedFolder(folder)}>{folder.name}</span>
+                        <span className="text-gray-400">({folder.children.length})</span>
+                    </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                    <div className="ml-4">
+                        {folder.children.map(renderFolder)}
+                    </div>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+    );
+
 
     return (
         <Dialog open={isModalOpen} onOpenChange={handleClose}>
@@ -95,7 +101,6 @@ const FileMoveModal = () => {
             </DialogContent>
         </Dialog>
     )
-        ;
 };
 
 export default FileMoveModal;

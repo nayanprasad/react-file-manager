@@ -1,12 +1,11 @@
 "use client"
-import React, {Fragment, useEffect} from 'react';
+import React, {Fragment} from 'react';
 import axios from "axios";
-import qs from "query-string";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormLabel, FormItem, FormMessage} from "@/components/ui/form";
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,} from "@/components/ui/dialog";
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {useParams, useRouter} from "next/navigation";

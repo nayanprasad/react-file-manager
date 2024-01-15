@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {DataGrid} from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -23,11 +23,6 @@ interface DataTableProps {
 
 
 const DataTable = ({data}: DataTableProps) => {
-
-
-    useEffect(() => {
-        console.log(data)
-    }, [data]);
 
     const {onOpen} = useModal()
     const router = useRouter();
@@ -93,14 +88,10 @@ const DataTable = ({data}: DataTableProps) => {
     }
 
     const convertBytes = (bytes: number) => {
-        const sizes = ["Bytes", "KB", "MB", "GB", "TB"]
-
-        if (bytes === 0) {
+        if (bytes === 0)
             return "0 Byte";
-        }
-
+        const sizes = ["Bytes", "KB", "MB", "GB", "TB"]
         const i = Math.floor(Math.log(bytes) / Math.log(1024));
-
         return Math.round(bytes / Math.pow(1024, i)) + " " + sizes[i];
     }
 
@@ -119,7 +110,6 @@ const DataTable = ({data}: DataTableProps) => {
                     </div>
                 );
             }
-
         },
         {field: "type", headerName: "Type", minWidth: 150, flex: 0.5},
         {field: "date", headerName: "Last Modified", minWidth: 100, flex: 0.5,},

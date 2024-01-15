@@ -1,21 +1,8 @@
 "use client"
 import React, {Fragment} from 'react';
-import {Button} from "@/components/ui/button";
-import {useProfile} from "@/hooks/use-profile-store";
-import {useRouter} from "next/navigation";
 import Avatar from "@/components/avatar";
 
-
-interface DriveHeaderProps {
-    path: [];
-    folderId?: string;
-    onDataModified?: () => void;
-}
-
 const DriveHeader = () => {
-
-    const {user} = useProfile()
-    const router = useRouter()
 
     return (
         <Fragment>

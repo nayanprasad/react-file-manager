@@ -54,7 +54,6 @@ const UserAvatar = () => {
                         {"Logout"}
                     </button>
                 </div>
-
             </PopoverContent>
         </Popover>
     )
