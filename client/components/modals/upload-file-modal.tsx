@@ -104,7 +104,7 @@ const UploadFileModal = () => {
                                                             name: file.name,
                                                             url: file.url,
                                                             size: file.size,
-                                                            type: file.url.split(".").pop(),
+                                                            type: file.url?.split(".").pop(),
                                                             folder: data.folderId
                                                         })
                                                         field.onChange(file.url);
